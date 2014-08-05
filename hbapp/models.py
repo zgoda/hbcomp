@@ -1,3 +1,5 @@
+import datetime
+
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
@@ -16,6 +18,7 @@ class User(db.Model):
     oauth_service = db.Column(db.String(50))
     remote_userid = db.Column(db.String(200))
     is_active = db.Column(db.Boolean, default=True)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (
         db.Index('user_remote_id', 'oauth_service', 'remote_userid'),
