@@ -3,5 +3,5 @@ import os
 __basedir = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = True
-SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % os.path.abspath(os.path.join(__basedir, 'notes.sqlite3'))
+SQLALCHEMY_DATABASE_URI = 'sqlite:///%s' % os.path.abspath(os.path.join(__basedir, 'db.sqlite3'))
 SECRET_KEY = 'secret'
