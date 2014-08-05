@@ -3,15 +3,20 @@ from flask import render_template, redirect, url_for, session, flash, request
 from flask.ext.babel import gettext as _
 from flask.ext.login import logout_user, login_required
 
-from brewlog.users.auth import services, google, facebook, github
-from brewlog.users.utils import login_success
+from hbapp.auth import auth_bp
 
 
-def select_provider():  # pragma: no cover
+#from brewlog.users.auth import services, google, facebook, github
+#from brewlog.users.utils import login_success
+
+
+@auth_bp.route('/select', endpoint='select')
+def select_provider():
     session['next'] = request.args.get('next')
     return render_template('auth/select.html')
 
 
+"""
 def remote_login(provider):
     if services.get(provider) is None:
         flash(_('Service "%(provider)s" is not supported', provider=provider), category='error')
@@ -94,3 +99,4 @@ def local_login_callback(resp):
 def logout():
     logout_user()
     return redirect(url_for('main'))
+"""

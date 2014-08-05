@@ -15,10 +15,23 @@ class User(db.Model):
     oauth_token_secret = db.Column(db.Text)
     oauth_service = db.Column(db.String(50))
     remote_userid = db.Column(db.String(200))
+    is_active = db.Column(db.Boolean, default=True)
 
     __table_args__ = (
         db.Index('user_remote_id', 'oauth_service', 'remote_userid'),
     )
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return self.is_active
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
 
 
 class Competition(db.Model):

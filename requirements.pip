@@ -5,6 +5,7 @@ Flask-Script
 Flask-Login
 Flask-OAuthlib
 Flask-Babel
+requests
 
 # deps
 Werkzeug
