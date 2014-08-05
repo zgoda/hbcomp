@@ -1,0 +1,18 @@
+# core
+Flask
+Flask-SQLAlchemy
+Flask-Script
+Flask-Login
+Flask-OAuthlib
+Flask-Babel
+
+# deps
+Werkzeug
+Jinja2
+itsdangerous
+SQLAlchemy
+oauthlib
+Babel
+speaklater
+markupsafe
+pytz
