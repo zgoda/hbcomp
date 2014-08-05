@@ -4,6 +4,7 @@ from flask.ext.babel import gettext as _
 from flask.ext.login import logout_user, login_required
 
 from hbapp.auth import auth_bp
+from hbapp.auth.utils import login_success
 
 
 #from brewlog.users.auth import services, google, facebook, github
@@ -16,19 +17,20 @@ def select_provider():
     return render_template('auth/select.html')
 
 
-"""
+@auth_bp.route('/<provider>', endpoint='login')
 def remote_login(provider):
+    from hbapp.auth.services import services
     if services.get(provider) is None:
         flash(_('Service "%(provider)s" is not supported', provider=provider), category='error')
-        return redirect(url_for('auth-select-provider'))
-    view_name = 'auth-callback-%s' % provider
+        return redirect(url_for('auth.select'))
+    view_name = 'auth.callback-%s' % provider
     callback = url_for(view_name, _external=True)
     service = services[provider][0]
     if provider == 'local':
         return local_login_callback(request.args.get('email', None))
     return service.authorize(callback=callback)  # pragma: no cover
 
-
+"""
 @google.authorized_handler
 def google_remote_login_callback(resp):  # pragma: no cover
     access_token = resp.get('access_token')
@@ -85,6 +87,7 @@ def github_remote_login_callback(resp):  # pragma: no cover
             return skip
         return login_success(me.data['email'], access_token, me.data['id'], 'github')
     return skip
+"""
 
 
 def local_login_callback(resp):
@@ -92,9 +95,10 @@ def local_login_callback(resp):
         email = resp
     else:
         email = 'user@example.com'
-    return login_success(email, 'dummy', 'dummy', 'local handler', nick='example user')
+    return login_success(email, 'dummy', 'dummy', 'local handler', nick=email.split('@')[0])
 
 
+"""
 @login_required
 def logout():
     logout_user()
