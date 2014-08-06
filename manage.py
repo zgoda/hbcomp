@@ -31,5 +31,11 @@ def recreatedb():
     db.create_all()
 
 
+@manager.command
+def loaddata():
+    from factories import initial_data
+    initial_data()
+
+
 if __name__ == '__main__':
     manager.run()
