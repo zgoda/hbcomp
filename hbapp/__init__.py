@@ -2,9 +2,6 @@ import os
 
 from flask import Flask, send_from_directory
 
-from hbapp.home import home_bp
-from hbapp.profile import profile_bp
-
 
 def make_app():
     app = Flask(__name__)
@@ -17,8 +14,14 @@ def make_app():
     db.init_app(app)
 
     # register blueprints
+    from hbapp.home import home_bp
+    from hbapp.profile import profile_bp
+    from hbapp.comp import comp_bp
+    from hbapp.auth import auth_bp
     app.register_blueprint(home_bp)
     app.register_blueprint(profile_bp, url_prefix='/profile')
+    app.register_blueprint(comp_bp, url_prefix='/comp')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
     if app.config['DEBUG']:
         @app.route('/favicon.ico')

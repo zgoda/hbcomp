@@ -5,7 +5,7 @@ from hbapp.models import User
 
 
 @profile_bp.route('/<int:user_id>', endpoint='details')
-def details(user_id):
+def public_details(user_id):
     user = User.query.get_or_404(user_id)
     ctx = {
         'user': user,
