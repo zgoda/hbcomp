@@ -37,14 +37,87 @@ class User(db.Model):
         return unicode(self.id)
 
 
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String(20))
+    name = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text)
+
+
+categories = db.Table('competition_categories',
+    db.Column('competition_id', db.Integer, db.ForeignKey('competition.id')),
+    db.Column('category_id', db.Integer, db.ForeignKey('category.id')),
+    db.Index('uix_competition_categories', 'competition_id', 'category_id', unique=True),
+)
+
+
 class Competition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     edition = db.Column(db.Integer)
-    date = db.Column(db.DateTime, nullable=False, index=True)
+    qualify_date = db.Column(db.Date)
+    date = db.Column(db.Date, nullable=False, index=True)
     entries_start_date = db.Column(db.Date, nullable=False)
     entries_finish_date = db.Column(db.Date, nullable=False, index=True)
     announcement = db.Column(db.Text, nullable=False)
     url = db.Column(db.Text)
     purely_virtual = db.Column(db.Boolean, default=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    owner = db.relationship('User', backref=db.backref('competitions', lazy='dynamic'))
+    categories = db.relationship('Category', secondary=categories,
+        backref=db.backref('competitions', lazy='dynamic'))
+
+
+class Entry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('entries', lazy='dynamic'))
+    competition_id = db.Column(db.Integer, db.ForeignKey('competition.id'), nullable=False)
+    competition = db.relationship('Competition', backref=db.backref('entries', lazy='dynamic'))
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    category = db.relationship('Category', backref=db.backref('entries', lazy='dynamic'))
+    name = db.Column(db.String(200), nullable=False)
+    received = db.Column(db.Date, default=datetime.date.today)
+    remarks = db.Column(db.Text)
+
+    __table_args__ = (
+        db.UniqueConstraint('user_id', 'competition_id', 'category_id', name='uix_competition_user_entries'),
+    )
+
+
+class Note(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
+    entry = db.relationship('Entry', backref=db.backref('notes'))
+    defects = db.Column(db.Text)
+    aroma_note = db.Column(db.Integer, nullable=False)  # max = 12
+    aroma_remarks = db.Column(db.Text)
+    colour_note = db.Column(db.Integer, nullable=False)  # max = 3
+    colour_remarks = db.Column(db.Text)
+    head_note = db.Column(db.Integer, nullable=False)  # max = 6
+    head_remarks = db.Column(db.Text)
+    taste_note = db.Column(db.Integer, nullable=False)  # max = 17
+    taste_remarks = db.Column(db.Text)
+    bitterness_note = db.Column(db.Integer, nullable=False)  # max = 6
+    bitterness_remarks = db.Column(db.Text)
+    texture_note = db.Column(db.Integer, nullable=False)  # max = 6
+    texture_remarks = db.Column(db.Text)
+    general_remarks = db.Column(db.Text)
+    judge_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    judge = db.relationship('User', backref=db.backref('notes', lazy='dynamic'))
+    final_note = db.Column(db.Integer, nullable=False)  # max = 50
+
+
+### Note events
+def note_pre_save(mapper, connection, target):
+    target.final_note = sum([
+        target.aroma_note,
+        target.colour_note,
+        target.head_note,
+        target.taste_note,
+        target.bitterness_note,
+        target.texture_note,
+    ])
+
+db.event.listen(Note, 'before_insert', note_pre_save)
+db.event.listen(Note, 'before_update', note_pre_save)
