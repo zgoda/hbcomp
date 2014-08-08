@@ -6,7 +6,7 @@
 		<h2>Sign in with</h2>
 		{% if config.GOOGLE %}
 		<div class="col-xs-12 col-md-4">
-			<p class="text-center"><a href="#" class="btn btn-auth btn-google">Google</a></p>
+			<p class="text-center"><a href="{{ url_for('auth.login', provider='google') }}" class="btn btn-auth btn-google">Google</a></p>
 		</div>
 		{% endif %}
 		{% if config.FACEBOOK %}

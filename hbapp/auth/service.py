@@ -12,7 +12,6 @@ google = oauth.remote_app('google', app_key='GOOGLE')
 
 services = {
     'google': google,
-    'local': None,
 }
 
 
