@@ -15,7 +15,7 @@ def select_provider():
 @auth_bp.route('/login/<provider>', endpoint='login')
 def remote_login(provider):
     if provider == 'local':
-        if not current_app.config.DEBUG:
+        if not current_app.config['DEBUG']:
             abort(404)
         return local_login_callback(request.args.get('email', None))
     if not provider in services:

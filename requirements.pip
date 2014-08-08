@@ -5,9 +5,11 @@ Flask-Script
 Flask-Login
 Flask-OAuthlib
 Flask-Babel
+Flask-WTF
 requests
 
 # deps
+WTForms
 Werkzeug
 Jinja2
 itsdangerous

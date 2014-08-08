@@ -1,7 +1,7 @@
 import os
 
-from flask import Flask, send_from_directory
-from flask.ext.login import LoginManager
+from flask import Flask, send_from_directory, g
+from flask.ext.login import LoginManager, current_user
 
 
 login_manager = LoginManager()
@@ -37,6 +37,10 @@ def make_app():
         def favicon():
             return send_from_directory(os.path.join(app.root_path, 'static'),
                 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+    @app.before_request
+    def before_request():
+        g.user = current_user
 
     # we're ready
     return app
