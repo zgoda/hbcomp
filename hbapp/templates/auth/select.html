@@ -4,21 +4,29 @@
 <div class="container">
 	<div class="row">
 		<h2>Sign in with</h2>
+		{% if config.GOOGLE %}
 		<div class="col-xs-12 col-md-4">
 			<p class="text-center"><a href="#" class="btn btn-auth btn-google">Google</a></p>
 		</div>
+		{% endif %}
+		{% if config.FACEBOOK %}
 		<div class="col-xs-12 col-md-4">
 			<p class="text-center"><a href="#" class="btn btn-auth btn-facebook">Facebook</a></p>
 		</div>
+		{% endif %}
+		{% if config.GITHUB %}
 		<div class="col-xs-12 col-md-4">
 			<p class="text-center"><a href="#" class="btn btn-auth btn-github">GitHub</a></p>
 		</div>
+		{% endif %}
 	</div>
+	{% if config.DEBUG %}
 	<hr>
 	<div class="row">
 		<div class="col-xs-12">
-			<p class="text-center"><a href="#" class="btn btn-primary btn-sm">Local</a></p>
+			<p class="text-center"><a href="{{ url_for('auth.login', provider='local') }}" class="btn btn-primary btn-sm">Local</a></p>
 		</div>
 	</div>
+	{% endif %}
 </div>
 {% endblock %}

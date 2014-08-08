@@ -1,6 +1,10 @@
 import os
 
 from flask import Flask, send_from_directory
+from flask.ext.login import LoginManager
+
+
+login_manager = LoginManager()
 
 
 def make_app():
@@ -12,6 +16,11 @@ def make_app():
     # init extensions
     from hbapp.models import db
     db.init_app(app)
+
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.select'
+    login_manager.login_message = 'Please log in to access this page'
+    login_manager.login_message_category = 'warning'
 
     # register blueprints
     from hbapp.home import home_bp
@@ -31,3 +40,9 @@ def make_app():
 
     # we're ready
     return app
+
+
+@login_manager.user_loader
+def get_user(userid):
+    from hbapp.models import User
+    return User.query.get(userid)

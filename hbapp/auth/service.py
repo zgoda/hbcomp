@@ -10,6 +10,12 @@ oauth = OAuth(app)
 google = oauth.remote_app('google', app_key='GOOGLE')
 
 
+services = {
+    'google': google,
+    'local': None,
+}
+
+
 @google.tokengetter
 def get_access_token():
     return session.get('access_token')
