@@ -53,5 +53,6 @@ def local_login_callback(resp):
 @auth_bp.route('/logout', endpoint='logout')
 def logout():
     logout_user()
-    session.pop('access_token')
-    return redirect(url_for('main'))
+    session.pop('access_token', None)
+    flash('You have been logged out', category='warning')
+    return redirect(url_for('home.index'))
