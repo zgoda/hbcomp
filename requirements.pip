@@ -6,9 +6,12 @@ Flask-Login
 Flask-OAuthlib
 Flask-Babel
 Flask-WTF
+Flask-FlatPages
 requests
 
 # deps
+PyYAML
+Markdown
 WTForms
 Werkzeug
 Jinja2

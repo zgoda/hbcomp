@@ -27,7 +27,7 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="{{ url_for('home.index') }}">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="{{ url_for('home.flatpage', path='about') }}">About</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -60,11 +60,10 @@
     {% endblock %}
     {% block content %}
     {% endblock %}
-    <footer>
-      <div class="well">
-        {% block footer %}
-        <p>Copyright: &copy; 2014, Jarek Zgoda &amp; Z-SOFT. All rights reserved.</p>
-        {% endblock %}
+    <footer class="container">
+      <div class="row">
+        <hr>
+        {% block footer %}<p>Copyright: &copy; 2014, Jarek Zgoda &amp; Z-SOFT. All rights reserved.</p>{% endblock %}
       </div>
     </footer>
     </div>

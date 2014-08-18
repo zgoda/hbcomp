@@ -2,9 +2,11 @@ import os
 
 from flask import Flask, send_from_directory, g
 from flask.ext.login import LoginManager, current_user
+from flask.ext.flatpages import FlatPages
 
 
 login_manager = LoginManager()
+pages = FlatPages()
 
 
 def make_app():
@@ -16,6 +18,8 @@ def make_app():
     # init extensions
     from hbapp.models import db
     db.init_app(app)
+    pages.init_app(app)
+    pages.get('foo')  # preload all pages
 
     login_manager.init_app(app)
     login_manager.login_view = 'auth.select'
