@@ -1,9 +1,9 @@
 from flask.ext.script import Manager, Server, Shell
 
-from hbapp import make_app
+from hbapp import create_app
 
 
-manager = Manager(make_app)
+manager = Manager(create_app)
 
 manager.add_command('runserver', Server(host='0.0.0.0'))
 manager.add_command('shell', Shell())

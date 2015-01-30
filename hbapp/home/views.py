@@ -1,12 +1,17 @@
 from flask import render_template
 
-from hbapp import pages
-from hbapp.home import home_bp
+from ..home import home_bp
+from ..ext import pages
+from ..models import Competition
 
 
 @home_bp.route('/')
 def index():
-    return render_template('index.html')
+    ctx = {
+        'recent': Competition.recent(),
+        'upcoming': Competition.upcoming(),
+    }
+    return render_template('index.html', **ctx)
 
 
 @home_bp.route('/page/<path:path>')

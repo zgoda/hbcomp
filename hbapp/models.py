@@ -1,12 +1,13 @@
 import datetime
 
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask import current_app
+
+from .ext import db
+from .utils.sqla import ModelMixin
 
 
-db = SQLAlchemy()
-
-
-class User(db.Model):
+class User(db.Model, ModelMixin):
+    __tablename__ = 'users'  # "user" is a reserved word in many engines
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
     email = db.Column(db.String(200), nullable=False, index=True)
@@ -37,7 +38,7 @@ class User(db.Model):
         return unicode(self.id)
 
 
-class Category(db.Model):
+class Category(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(20))
     name = db.Column(db.String(200), nullable=False)
@@ -51,7 +52,7 @@ categories = db.Table('competition_categories',
 )
 
 
-class Competition(db.Model):
+class Competition(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     edition = db.Column(db.Integer)
@@ -62,15 +63,30 @@ class Competition(db.Model):
     announcement = db.Column(db.Text, nullable=False)
     url = db.Column(db.Text)
     purely_virtual = db.Column(db.Boolean, default=False)
-    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     owner = db.relationship('User', backref=db.backref('competitions', lazy='dynamic'))
     categories = db.relationship('Category', secondary=categories,
         backref=db.backref('competitions', lazy='dynamic'))
+    is_active = db.Column(db.Boolean, default=False)
+
+    @classmethod
+    def recent(cls, limit=None):
+        if limit is None:
+            limit = current_app.config.get('LIST_LIMIT', 5)
+        return cls.query.filter_by(is_active=True).order_by(db.desc(cls.id)).limit(limit)
+
+    @classmethod
+    def upcoming(cls, limit=None):
+        if limit is None:
+            limit = current_app.config.get('LIST_LIMIT', 5)
+        return cls.query.filter(
+            cls.date>=datetime.datetime.utcnow(), cls.is_active==True
+        ).order_by(cls.date).limit(limit)
 
 
-class Entry(db.Model):
+class Entry(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('entries', lazy='dynamic'))
     competition_id = db.Column(db.Integer, db.ForeignKey('competition.id'), nullable=False)
     competition = db.relationship('Competition', backref=db.backref('entries', lazy='dynamic'))
@@ -79,13 +95,14 @@ class Entry(db.Model):
     name = db.Column(db.String(200), nullable=False)
     received = db.Column(db.Date, default=datetime.date.today)
     remarks = db.Column(db.Text)
+    recipe = db.Column(db.Text)
 
     __table_args__ = (
         db.UniqueConstraint('user_id', 'competition_id', 'category_id', name='uix_competition_user_entries'),
     )
 
 
-class Note(db.Model):
+class Note(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
     entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
     entry = db.relationship('Entry', backref=db.backref('notes'))
@@ -103,12 +120,12 @@ class Note(db.Model):
     texture_note = db.Column(db.Integer, nullable=False)  # max = 6
     texture_remarks = db.Column(db.Text)
     general_remarks = db.Column(db.Text)
-    judge_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    judge_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     judge = db.relationship('User', backref=db.backref('notes', lazy='dynamic'))
     final_note = db.Column(db.Integer, nullable=False)  # max = 50
 
 
-### Note events
+# Note events
 def note_pre_save(mapper, connection, target):
     target.final_note = sum([
         target.aroma_note,

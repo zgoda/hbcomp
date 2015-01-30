@@ -1,9 +1,10 @@
 from flask import render_template, redirect, url_for, flash
 from flask.ext.login import login_required
 
-from hbapp.profile import profile_bp
-from hbapp.profile.forms import ProfileForm
-from hbapp.models import User, db
+from ..ext import db
+from ..profile import profile_bp
+from ..profile.forms import ProfileForm
+from ..models import User
 
 
 @profile_bp.route('/<int:user_id>', endpoint='details', methods=['POST', 'GET'])

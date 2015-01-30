@@ -1,10 +1,6 @@
 from flask import session
-from flask import current_app as app
 
-from flask.ext.oauthlib.client import OAuth
-
-
-oauth = OAuth(app)
+from ..ext import oauth
 
 
 google = oauth.remote_app('google', app_key='GOOGLE')
