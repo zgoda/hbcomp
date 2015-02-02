@@ -10,5 +10,5 @@ oauth = OAuth()
 from flask_flatpages import FlatPages
 pages = FlatPages()
 
-from flask_babel import Babel
+from flask_babelex import Babel
 babel = Babel()

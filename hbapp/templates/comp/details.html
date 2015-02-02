@@ -3,4 +3,6 @@
 {% block pagetitle %}Competition "{{ comp.title }}"{% endblock %}
 
 {% block content %}
+<h1>Competition "{{ comp.title }}"</h1>
+<p class="lead">Held {{ comp.date }}{% if comp.location %} at {{ comp.location }}{% endif %}.</p>
 {% endblock %}

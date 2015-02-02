@@ -16,6 +16,8 @@ class CompetitionForm(Form):
     entries_start_date = DateField(validators=[DataRequired()])
     entries_finish_date = DateField(validators=[DataRequired()])
     url = StringField()
+    contact_emails = TextAreaField()
+    location = TextAreaField()
 
     def save(self, obj=None, save=True):
         if obj is None:
