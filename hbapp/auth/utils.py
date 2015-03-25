@@ -1,5 +1,6 @@
 from flask import session, flash, request, url_for, redirect
-from flask.ext.login import login_user
+from flask_login import login_user
+from flask_babelex import gettext as _
 
 from hbapp.models import db, User
 
@@ -17,7 +18,7 @@ def login_success(email, access_token, remote_id, service_name, **kwargs):
     db.session.commit()
     login_user(user)
     session.permanent = True
-    flash('You have been signed in as %(email)s using %(service)s' % dict(email=email, service=service_name),
+    flash(_('You have been signed in as %(email)s using %(service)s', email=email, service=service_name),
         category='success')
     next_ = request.args.get('next') or session.pop('next', None) or url_for('profile.details', user_id=user.id)
     return redirect(next_)

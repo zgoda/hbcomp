@@ -1,5 +1,6 @@
 from flask import render_template, session, request, flash, redirect, url_for, current_app, abort
-from flask.ext.login import logout_user, login_required
+from flask_login import logout_user, login_required
+from flask_babelex import gettext as _
 
 from hbapp.auth import auth_bp
 from hbapp.auth.utils import login_success
@@ -19,7 +20,7 @@ def remote_login(provider):
             abort(404)
         return local_login_callback(request.args.get('email', None))
     if not provider in services:
-        flash('Service "%(provider)s" is not supported' % dict(provider=provider), category='error')
+        flash(_('Service "%(provider)s" is not supported', provider=provider), category='error')
         return redirect(url_for('auth.select'))
     view_name = 'auth.callback-%s' % provider
     callback = url_for(view_name, _external=True)
@@ -31,7 +32,7 @@ def remote_login(provider):
 @google.authorized_handler
 def google_remote_login_callback(resp):  # pragma: no cover
     if resp is None:
-        flash('Access denied, reason: %(reason)s error: %s(error)s' % request.args, category='error')
+        flash(_('Access denied, reason: %(reason)s error: %s(error)s', **request.args), category='error')
         redirect(url_for('home'))
     access_token = resp.get('access_token')
     if access_token:
@@ -54,5 +55,5 @@ def local_login_callback(resp):
 def logout():
     logout_user()
     session.pop('access_token', None)
-    flash('You have been logged out', category='warning')
+    flash(_('You have been logged out'), category='warning')
     return redirect(url_for('home.index'))

@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, request, send_from_directory, g
 from flask_login import current_user
+from flask_babelex import lazy_gettext as _
 
 from .models import User
 from .ext import db, login_manager, oauth, babel, pages
@@ -65,7 +66,7 @@ def configure_extensions(app):
 
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
-    login_manager.login_message = 'Please log in to access this page'
+    login_manager.login_message = _('Please log in to access this page')
     login_manager.login_message_category = 'warning'
 
     pages.init_app(app)
