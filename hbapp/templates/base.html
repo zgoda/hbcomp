@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block pagetitle %}{% endblock %}</title>
     <link href="/static/vendor/bootstrap/css/bootstrap-sandstone.min.css" rel="stylesheet">
-    {% block extracss %}
-    {% endblock %}
+    {% block extracss %}{% endblock %}
   </head>
   <body role="document">
 
@@ -61,7 +60,7 @@
       <footer class="container">
         <div class="row">
           <hr>
-          {% block footer %}<p>Copyright: &copy; 2014-2015, Jarek Zgoda &amp; Z-SOFT. All rights reserved.</p>{% endblock %}
+          <p>Copyright: &copy; 2014&ndash;<script>document.write(new Date().getFullYear())</script>, Jarek Zgoda &amp; Z-SOFT. All rights reserved.</p>
         </div>
       </footer>
     </div>
