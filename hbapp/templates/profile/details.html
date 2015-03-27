@@ -2,7 +2,5 @@
 {% import "macros/forms.html" as forms %}
 
 {% block content %}
-<div class="container">
 {{ forms.render_horizontal_form(form, action_url=url_for('profile.details', user_id=current_user.id), action_text='save') }}
-</div>
 {% endblock %}
