@@ -5,10 +5,12 @@
 <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap-social.css">
 {% endblock %}
 
+{% block pagetitle %}{% trans %}Select login provider{% endtrans %}{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="col-xs-12">
-    <h2>Sign in with</h2>
+    <h2>{% trans %}Sign in with{% endtrans %}</h2>
   </div>
   {% if config.GOOGLE %}
   <div class="col-md-4">
@@ -30,7 +32,7 @@
 <div class="row">
   <div class="col-md-12">
     <hr>
-    <div class="well well-lg text-center"><a href="{{ url_for('auth.login', provider='local') }}" class="btn btn-primary">Local</a></div>
+    <div class="well well-lg text-center"><a href="{{ url_for('auth.login', provider='local') }}" class="btn btn-primary">{% trans %}Local{% endtrans %}</a></div>
   </div>
 </div>
 {% endif %}

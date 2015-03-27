@@ -1,39 +1,39 @@
 {% extends "base.html" %}
 
-{% block pagetitle %}Your homebrewing competition{% endblock %}
+{% block pagetitle %}{% trans %}Your homebrewing competition{% endtrans %}{% endblock %}
 
 {% block callout %}
 <div class="page-header">
-  <h1>Make the best homebrewing competition</h1>
+  <h1>{% trans %}Make the best homebrewing competition{% endtrans %}</h1>
 </div>
-<p class="lead">Make your homebrewing competition - effortlessly, and in a proper way.</p>
-<p><a href="{{ url_for('home.flatpage', path='about') }}" class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
+<p class="lead">{% trans %}Make your homebrewing competition - effortlessly, and in a proper way{% endtrans %}.</p>
+<p><a href="{{ url_for('home.flatpage', path='about') }}" class="btn btn-primary btn-lg" role="button">{% trans %}Learn more{% endtrans %} &raquo;</a></p>
 {% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-6">
-  	<h2>Recently announced</h2>
+    <h2>{% trans %}Recently announced{% endtrans %}</h2>
     <ul>
       {% for comp in recent %}
       <li>{{ comp.title }}</li>
       {% else %}
-      <p>Nothing</p>
+      <p>{% trans %}Nothing{% endtrans %}</p>
       {% endfor %}
     </ul>
   </div>
   <div class="col-md-6">
-  	<h2>Upcoming</h2>
+    <h2>{% trans %}Upcoming{% endtrans %}</h2>
     <ul>
       {% for comp in upcoming %}
       <li>{{ comp.title }}</li>
       {% else %}
-      <p>Nothing</p>
+      <p>{% trans %}Nothing{% endtrans %}</p>
       {% endfor %}
     </ul>
   </div>
 </div>
 {% if current_user.is_authenticated() %}
-<p><a href="{{ url_for('comp.create') }}">Announce your competition</a></p>
+<p><a href="{{ url_for('comp.create') }}">{% trans %}Announce your competition{% endtrans %}</a></p>
 {% endif %}
 {% endblock %}
