@@ -2,5 +2,5 @@
 {% import "macros/forms.html" as forms %}
 
 {% block content %}
-{{ forms.render_horizontal_form(form, action_url=url_for('profile.details', user_id=current_user.id), action_text='save') }}
+{{ forms.render_horizontal_form(form, action_url=url_for('profile.details', user_id=current_user.id), action_text=gettext('save')) }}
 {% endblock %}
