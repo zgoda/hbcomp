@@ -1,9 +1,9 @@
 {% extends "comp/base.html" %}
 {% import "macros/forms.html" as forms %}
 
-{% block pagetitle %}{% if form.instance %}Modify competition "{{ form.instance.title }}"{% else %}Create new competition{% endif %}{% endblock %}
+{% block pagetitle %}{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{% trans %}Create new competition{% endtrans %}{% endif %}{% endblock %}
 
 {% block content %}
-<h1>{% if form.instance %}Modify competition "{{ form.instance.title }}"{% else %}New competition{% endif %}</h1>
+<h1>{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{% trans %}Create new competition{% endtrans %}{% endif %}</h1>
 {{ forms.render_horizontal_form(form, action_url=url_for('comp.create'), action_text=gettext('save')) }}
 {% endblock %}

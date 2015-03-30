@@ -37,6 +37,9 @@ class User(db.Model, ModelMixin):
     def get_id(self):
         return unicode(self.id)
 
+    def get_full_name(self):
+        return self.name or self.email
+
 
 class Category(db.Model, ModelMixin):
     id = db.Column(db.Integer, primary_key=True)
