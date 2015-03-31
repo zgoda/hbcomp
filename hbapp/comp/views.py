@@ -17,7 +17,13 @@ def create():
     return render_template('comp/form.html', **ctx)
 
 
-@comp_bp.route('/<int:comp_id>')
+@comp_bp.route('/<int:comp_id>', methods=['POST', 'GET'])
 def details(comp_id):
-    ctx = dict(comp=Competition.query.get(comp_id))
+    comp = Competition.query.get_or_404(comp_id)
+    form = CompetitionForm()
+    if form.validate_on_submit():
+        comp = form.save(obj=comp)
+        flash(gettext('Competition %(name)s has been changed', name=comp.title), category='success')
+    form = CompetitionForm(obj=comp)
+    ctx = dict(comp=comp, form=form)
     return render_template('comp/details.html', **ctx)

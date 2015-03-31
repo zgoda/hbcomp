@@ -16,7 +16,7 @@
     <h2>{% trans %}Recently announced{% endtrans %}</h2>
     <ul>
       {% for comp in recent %}
-      <li>{{ comp.title }}</li>
+      <li><a href="{{ url_for('comp.details', comp_id=comp.id) }}">{{ comp.title }}</a></li>
       {% else %}
       <p>{% trans %}Nothing{% endtrans %}</p>
       {% endfor %}

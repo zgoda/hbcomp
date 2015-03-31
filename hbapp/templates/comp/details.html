@@ -1,8 +1,41 @@
 {% extends "comp/base.html" %}
+{% import "macros/forms.html" as forms %}
+{% import "macros/bootstrap.html" as bsu %}
 
-{% block pagetitle %}{{ gettext('Competition %(name)s', name=comp.title }}{% endblock %}
+{% block pagetitle %}{{ gettext('Competition %(name)s', name=comp.title) }}{% endblock %}
 
 {% block content %}
-<h1>{{ gettext('Competition %(name)s', name=comp.title }}</h1>
-<p class="lead">{% if comp.location %}{{ gettext('Held %(date)s at %(location)s', date=comp.date, location=comp.location) }}{% else %}{{ gettext('Held %(date)s', date=comp.date) }}{% endif %}.</p>
+<h1>{{ gettext('Competition %(name)s', name=comp.title) }}</h1>
+<p class="lead">{% if comp.location %}{{ gettext('Held %(date)s at %(location)s', date=comp.date|dateformat("short"), location=comp.location) }}{% else %}{{ gettext('Held %(date)s', date=comp.date|dateformat("short")) }}{% endif %}.</p>
+{% if comp.purely_virtual %}<p>{% trans %}Virtual{% endtrans %}</p>{% endif %}
+<h2>{% trans %}Announcement{% endtrans %}</h2>
+<p>{{ comp.announcement }}</p>
+<h2>{% trans %}Important facts{% endtrans %}</h2>
+<dl class="dl-horizontal">
+  <dt>{% trans %}full name{% endtrans %}:</dt>
+  <dd>{{ gettext('%(title)s, edition %(edition)s', title=comp.title, edition=comp.edition) }}</dd>
+  <dt>{% trans %}date{% endtrans %}:</dt>
+  <dd>{{ comp.date|dateformat("short") }}</dd>
+  <dt>{% trans %}entry dates{% endtrans %}:</dt>
+  <dd>{{ gettext("We accept entries from %(start_date)s until %(end_date)s", start_date=comp.entries_start_date|dateformat("short"), end_date=comp.entries_finish_date|dateformat("short")) }}</dd>
+  {% if comp.qualify_date %}
+  <dt>{% trans %}qualification date{% endtrans %}:</dt>
+  <dd>{{ comp.qualify_date|dateformat("short") }}</dd>
+  {% endif %}
+  {% if comp.url or comp.contact_emails %}
+  <dt>{% trans %}contact{% endtrans %}:</dt>
+  <dd>{{ gettext('Web page: %(url)s, emails: %(emails)s', url=comp.url, emails=comp.contact_emails) }}</dd>
+  {% endif %}
+</dl>
+{% if comp.owner == current_user %}
+<h2>{% trans %}Change competition data{% endtrans %}</h2>
+<form class="form form-horizontal" method="post", action="{{ url_for('comp.details', comp_id=comp.id) }}">
+  {{ forms.render(form) }}
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">{{ bsu.icon("ok") }} {{ gettext('save') }}</button>
+    </div>
+  </div>
+</form>
+{% endif %}
 {% endblock %}
