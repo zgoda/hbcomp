@@ -4,5 +4,5 @@
 {% block pagetitle %}{{ gettext('Account data for user %(name)s', name=current_user.get_full_name()) }}{% endblock %}
 
 {% block content %}
-{{ forms.render_horizontal_form(form, action_url=url_for('profile.details', user_id=current_user.id), action_text=gettext('save')) }}
+{{ forms.render_horizontal_form(form, action_url=url_for('profile.details', user_id=current_user.id), action_text=gettext('save'), action_icon='fa fa-check') }}
 {% endblock %}

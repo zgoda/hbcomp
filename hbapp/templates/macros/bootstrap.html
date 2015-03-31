@@ -33,6 +33,11 @@
 {%- endmacro %}
 
 
+{% macro fa_icon(type=None, extra_classes=[]) -%}
+<span{{ ({'class': (['fa', 'fa-' + type] + extra_classes)|join(' ')})|xmlattr}}{{kwargs|xmlattr}}></span>
+{%- endmacro %}
+
+
 {% macro form_button(url, content, method='post', class='btn-link') -%}
 <form style="display: inline;" action='{{url}}' method='{{method}}'><button class="{{class|safe}}">{{content}}</button></form>
 {%- endmacro %}

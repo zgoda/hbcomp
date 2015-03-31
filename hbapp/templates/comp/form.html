@@ -5,5 +5,5 @@
 
 {% block content %}
 <h1>{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{% trans %}Create new competition{% endtrans %}{% endif %}</h1>
-{{ forms.render_horizontal_form(form, action_url=url_for('comp.create'), action_text=gettext('save')) }}
+{{ forms.render_horizontal_form(form, action_url=url_for('comp.create'), action_text=gettext('save'), action_icon='fa fa-check') }}
 {% endblock %}

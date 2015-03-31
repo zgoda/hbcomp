@@ -106,7 +106,7 @@
 {%- endmacro %}
 
 
-{% macro render_horizontal_form(form, action_url='', action_text='Submit', class_='', btn_class='btn btn-primary') -%}
+{% macro render_horizontal_form(form, action_url='', action_text='Submit', action_icon='', class_='', btn_class='btn btn-primary') -%}
 
 <form method="post" action="{{ action_url }}" role="form" class="form-horizontal {{ class_ }}">
     {{ form.hidden_tag() if form.hidden_tag }}
@@ -127,7 +127,7 @@
     {% endif %}
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="{{ btn_class }}">{{ action_text }}</button>
+            <button type="submit" class="{{ btn_class }}">{% if action_icon %}<i class="{{ action_icon }}"></i> {% endif %}{{ action_text }}</button>
         </div>
     </div>
 </form>
