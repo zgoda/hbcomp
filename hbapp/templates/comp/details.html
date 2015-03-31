@@ -1,8 +1,8 @@
 {% extends "comp/base.html" %}
 
-{% block pagetitle %}Competition "{{ comp.title }}"{% endblock %}
+{% block pagetitle %}{{ gettext('Competition %(name)s', name=comp.title }}{% endblock %}
 
 {% block content %}
-<h1>Competition "{{ comp.title }}"</h1>
-<p class="lead">Held {{ comp.date }}{% if comp.location %} at {{ comp.location }}{% endif %}.</p>
+<h1>{{ gettext('Competition %(name)s', name=comp.title }}</h1>
+<p class="lead">{% if comp.location %}{{ gettext('Held %(date)s at %(location)s', date=comp.date, location=comp.location) }}{% else %}{{ gettext('Held %(date)s', date=comp.date) }}{% endif %}.</p>
 {% endblock %}

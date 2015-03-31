@@ -1,4 +1,5 @@
 from flask import render_template, flash, redirect, url_for
+from flask_babelex import gettext
 
 from ..models import Competition
 from ..comp import comp_bp
@@ -10,7 +11,7 @@ def create():
     form = CompetitionForm()
     if form.validate_on_submit():
         comp = form.save()
-        flash('Competition "%s" has been created' % comp.title, category='success')
+        flash(gettext('Competition %(name)s has been created', name=comp.title), category='success')
         return redirect(url_for('comp.details', comp_id=comp.id))
     ctx = dict(form=form)
     return render_template('comp/form.html', **ctx)
