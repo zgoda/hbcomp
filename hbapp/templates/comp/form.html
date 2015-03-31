@@ -1,9 +1,17 @@
 {% extends "comp/base.html" %}
 {% import "macros/forms.html" as forms %}
+{% import "macros/bootstrap.html" as bsu %}
 
 {% block pagetitle %}{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{% trans %}Create new competition{% endtrans %}{% endif %}{% endblock %}
 
 {% block content %}
 <h1>{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{% trans %}Create new competition{% endtrans %}{% endif %}</h1>
-{{ forms.render_horizontal_form(form, action_url=url_for('comp.create'), action_text=gettext('save'), action_icon='fa fa-check') }}
+<form class="form form-horizontal" method="post", action="{{ url_for('comp.create') }}">
+  {{ forms.render(form) }}
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">{{ bsu.icon("ok") }} {{ gettext('save') }}</button>
+    </div>
+  </div>
+</form>
 {% endblock %}

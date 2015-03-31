@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask_babelex import lazy_gettext as _
 
 from .models import User
-from .ext import db, login_manager, oauth, babel, pages
+from .ext import db, login_manager, oauth, babel, pages, bootstrap
 
 
 __all__ = ['create_app']
@@ -52,7 +52,11 @@ def configure_blueprints(app):
 
 def configure_extensions(app):
     db.init_app(app)
+
     oauth.init_app(app)
+
+    bootstrap.init_app(app)
+
     babel.init_app(app)
 
     @babel.localeselector

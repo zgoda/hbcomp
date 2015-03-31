@@ -1,4 +1,4 @@
-{% macro render_pagination(pagination) %}
+{% macro render_pagination(pagination) -%}
 {% if pagination.pages > 1 %}
 <nav>
   <ul class="pagination pagination-lg">
@@ -9,13 +9,13 @@
   {% endif %}
   {%- for page in pagination.iter_pages() %}
   {% if page %}
-  	{% if page != pagination.page %}
-  	<li><a href="{{ url_for_other_page(page) }}">{{ page }}</a></li>
-  	{% else %}
-  	<li class="active"><a href="">{{ page }}</a></li>
-  	{% endif %}
+    {% if page != pagination.page %}
+    <li><a href="{{ url_for_other_page(page) }}">{{ page }}</a></li>
+    {% else %}
+    <li class="active"><a href="">{{ page }}</a></li>
+    {% endif %}
   {% else %}
-  	<li class="disabled"><span class="ellipsis">&hellip;</span></li>
+    <li class="disabled"><span class="ellipsis">&hellip;</span></li>
   {% endif %}
   {%- endfor %}
   {% if pagination.has_next %}
@@ -26,4 +26,4 @@
   </ul>
 </nav>
 {% endif %}
-{% endmacro %}
+{%- endmacro %}

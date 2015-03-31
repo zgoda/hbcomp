@@ -1,8 +1,17 @@
 {% extends "profile/base.html" %}
 {% import "macros/forms.html" as forms %}
+{% import "macros/bootstrap.html" as bsu %}
 
 {% block pagetitle %}{{ gettext('Account data for user %(name)s', name=current_user.get_full_name()) }}{% endblock %}
 
 {% block content %}
-{{ forms.render_horizontal_form(form, action_url=url_for('profile.details', user_id=current_user.id), action_text=gettext('save'), action_icon='fa fa-check') }}
+<h1>{% trans%}Your account data{% endtrans %}</h1>
+<form class="form form-horizontal" method="post", action="{{ url_for('profile.details', user_id=current_user.id) }}">
+  {{ forms.render(form) }}
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">{{ bsu.icon("ok") }} {{ gettext('save') }}</button>
+    </div>
+  </div>
+</form>
 {% endblock %}

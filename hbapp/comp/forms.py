@@ -1,4 +1,4 @@
-from wtforms.fields import StringField, TextAreaField
+from wtforms.fields import StringField, TextAreaField, BooleanField
 from wtforms.fields.html5 import IntegerField, DateField
 from wtforms.validators import DataRequired, Optional
 from flask_login import current_user
@@ -9,7 +9,7 @@ from ..models import Competition
 
 class CompetitionForm(Form):
     title = StringField(validators=[DataRequired()])
-    edition = IntegerField(validators=[Optional()])
+    edition = IntegerField()
     announcement = TextAreaField(validators=[DataRequired()])
     date = DateField(validators=[DataRequired()])
     qualify_date = DateField(validators=[Optional()])
@@ -18,6 +18,7 @@ class CompetitionForm(Form):
     url = StringField()
     contact_emails = TextAreaField()
     location = TextAreaField()
+    purely_virtual = BooleanField()
 
     def save(self, obj=None, save=True):
         if obj is None:

@@ -12,3 +12,6 @@ pages = FlatPages()
 
 from flask_babelex import Babel
 babel = Babel()
+
+from flask_bootstrap import Bootstrap
+bootstrap = Bootstrap()
