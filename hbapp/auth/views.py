@@ -1,6 +1,6 @@
 from flask import render_template, session, request, flash, redirect, url_for, current_app, abort
 from flask_login import logout_user, login_required
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 
 from hbapp.auth import auth_bp
 from hbapp.auth.utils import login_success

@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash
-from flask.ext.login import login_required
+from flask_login import login_required
 
 from ..ext import db
 from ..profile import profile_bp

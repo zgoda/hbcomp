@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, request, send_from_directory, g
 from flask_login import current_user
-from flask_babelex import lazy_gettext as _
+from flask_babel import lazy_gettext as _
 
 from .models import User
 from .ext import db, login_manager, oauth, babel, pages, bootstrap

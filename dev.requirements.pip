@@ -1,0 +1,8 @@
+pip
+setuptools
+ipython
+ipdb
+flask-shell-ipython
+flake8
+
+-r requirements.pip

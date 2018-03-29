@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for
-from flask_babelex import gettext
+from flask_babel import gettext
 
 from ..models import Competition
 from ..comp import comp_bp

@@ -1,3 +1,4 @@
 -r requirements.pip
 
 factory-boy
+flask-testing

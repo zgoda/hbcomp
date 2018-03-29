@@ -1,6 +1,6 @@
 from flask import session, flash, request, url_for, redirect
 from flask_login import login_user
-from flask_babelex import gettext as _
+from flask_babel import gettext as _
 
 from hbapp.models import db, User
 

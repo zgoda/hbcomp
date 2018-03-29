@@ -1,10 +1,9 @@
 # core
 Flask
 Flask-SQLAlchemy
-Flask-Script
 Flask-Login
 Flask-OAuthlib
-Flask-BabelEx
+Flask-Babel
 Flask-WTF
 Flask-FlatPages
 Flask-Bootstrap
