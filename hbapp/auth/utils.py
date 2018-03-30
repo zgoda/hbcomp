@@ -2,7 +2,7 @@ from flask import session, flash, request, url_for, redirect
 from flask_login import login_user
 from flask_babel import gettext as _
 
-from hbapp.models import db, User
+from ..models import db, User
 
 
 def login_success(email, access_token, remote_id, service_name, **kwargs):

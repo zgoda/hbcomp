@@ -1,12 +1,13 @@
 import datetime
 
 from flask import current_app
+from flask_login import UserMixin
 
 from .ext import db
 from .utils.sqla import ModelMixin
 
 
-class User(db.Model, ModelMixin):
+class User(db.Model, ModelMixin, UserMixin):
     __tablename__ = 'users'  # "user" is a reserved word in many engines
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
@@ -25,17 +26,8 @@ class User(db.Model, ModelMixin):
         db.Index('user_remote_id', 'oauth_service', 'remote_userid'),
     )
 
-    def is_authenticated(self):
-        return True
-
     def is_active(self):
         return self.is_active
-
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        return unicode(self.id)
 
     def get_full_name(self):
         return self.name or self.email
@@ -141,6 +133,7 @@ def note_pre_save(mapper, connection, target):
         target.bitterness_note,
         target.texture_note,
     ])
+
 
 db.event.listen(Note, 'before_insert', note_pre_save)
 db.event.listen(Note, 'before_update', note_pre_save)

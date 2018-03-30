@@ -2,9 +2,9 @@ from flask import render_template, session, request, flash, redirect, url_for, c
 from flask_login import logout_user, login_required
 from flask_babel import gettext as _
 
-from hbapp.auth import auth_bp
-from hbapp.auth.utils import login_success
-from hbapp.auth.service import services, google
+from ..auth import auth_bp
+from ..auth.utils import login_success
+from ..auth.service import services, google
 
 
 @auth_bp.route('/select', endpoint='select')
@@ -19,7 +19,7 @@ def remote_login(provider):
         if not current_app.config['DEBUG']:
             abort(404)
         return local_login_callback(request.args.get('email', None))
-    if not provider in services:
+    if provider not in services:
         flash(_('Service "%(provider)s" is not supported', provider=provider), category='error')
         return redirect(url_for('auth.select'))
     view_name = 'auth.callback-%s' % provider
