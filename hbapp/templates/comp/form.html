@@ -2,10 +2,10 @@
 {% import "macros/forms.html" as forms %}
 {% import "macros/bootstrap.html" as bsu %}
 
-{% block pagetitle %}{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{% trans %}Create new competition{% endtrans %}{% endif %}{% endblock %}
+{% block pagetitle %}{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{{ gettext('create new competition').capitalize() }}{% endif %}{% endblock %}
 
 {% block content %}
-<h1>{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{% trans %}Create new competition{% endtrans %}{% endif %}</h1>
+<h1>{% if form.instance %}{{ gettext('Modify competition %(name)s', name=form.instance.title) }}{% else %}{{ gettext('create new competition').capitalize() }}{% endif %}</h1>
 <form class="form form-horizontal" method="post", action="{{ url_for('comp.create') }}">
   {{ forms.render(form) }}
   <div class="form-group">

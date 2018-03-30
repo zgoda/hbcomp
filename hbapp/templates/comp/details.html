@@ -7,28 +7,28 @@
 {% block content %}
 <h1>{{ gettext('Competition %(name)s', name=comp.title) }}</h1>
 <p class="lead">{% if comp.location %}{{ gettext('Held %(date)s at %(location)s', date=comp.date|dateformat("short"), location=comp.location) }}{% else %}{{ gettext('Held %(date)s', date=comp.date|dateformat("short")) }}{% endif %}.</p>
-{% if comp.purely_virtual %}<p>{% trans %}Virtual{% endtrans %}</p>{% endif %}
-<h2>{% trans %}Announcement{% endtrans %}</h2>
+{% if comp.purely_virtual %}<p>{{ gettext('virtual').capitalize() }}</p>{% endif %}
+<h2>{{ gettext('announcement').capitalize() }}</h2>
 <p>{{ comp.announcement }}</p>
-<h2>{% trans %}Important facts{% endtrans %}</h2>
+<h2>{{ gettext('important facts').capitalize() }}</h2>
 <dl class="dl-horizontal">
-  <dt>{% trans %}full name{% endtrans %}:</dt>
+  <dt>{{ gettext('full name') }}:</dt>
   <dd>{{ gettext('%(title)s, edition %(edition)s', title=comp.title, edition=comp.edition) }}</dd>
-  <dt>{% trans %}date{% endtrans %}:</dt>
+  <dt>{{ gettext('date') }}:</dt>
   <dd>{{ comp.date|dateformat("short") }}</dd>
-  <dt>{% trans %}entry dates{% endtrans %}:</dt>
+  <dt>{{ gettext('entry dates') }}:</dt>
   <dd>{{ gettext("We accept entries from %(start_date)s until %(end_date)s", start_date=comp.entries_start_date|dateformat("short"), end_date=comp.entries_finish_date|dateformat("short")) }}</dd>
   {% if comp.qualify_date %}
-  <dt>{% trans %}qualification date{% endtrans %}:</dt>
+  <dt>{{ gettext('qualification date') }}:</dt>
   <dd>{{ comp.qualify_date|dateformat("short") }}</dd>
   {% endif %}
   {% if comp.url or comp.contact_emails %}
-  <dt>{% trans %}contact{% endtrans %}:</dt>
+  <dt>{{ gettext('contact') }}:</dt>
   <dd>{{ gettext('Web page: %(url)s, emails: %(emails)s', url=comp.url, emails=comp.contact_emails) }}</dd>
   {% endif %}
 </dl>
 {% if comp.owner == current_user %}
-<h2>{% trans %}Change competition data{% endtrans %}</h2>
+<h2>{{ gettext('change competition data').capitalize() }}</h2>
 <form class="form form-horizontal" method="post", action="{{ url_for('comp.details', comp_id=comp.id) }}">
   {{ forms.render(form) }}
   <div class="form-group">

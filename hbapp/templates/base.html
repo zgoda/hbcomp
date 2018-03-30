@@ -16,7 +16,7 @@
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">{% trans %}Toggle navigation{% endtrans %}</span>
+            <span class="sr-only">{{ gettext('toggle navigation').capitalize() }}</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -25,18 +25,18 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('home.flatpage', path='about') }}">{% trans %}About{% endtrans %}</a></li>
-            <li><a href="{{ url_for('home.flatpage', path='contact') }}">{% trans %}Contact{% endtrans %}</a></li>
+            <li><a href="{{ url_for('home.flatpage', path='about') }}">{{ gettext('about').capitalize() }}</a></li>
+            <li><a href="{{ url_for('home.flatpage', path='contact') }}">{{ gettext('contact').capitalize() }}</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% if current_user.is_anonymous %}{% trans %}Account{% endtrans %}{% else %}{{ current_user.get_full_name() }}{% endif %} <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% if current_user.is_anonymous %}{{ gettext('account').capitalize() }}{% else %}{{ current_user.get_full_name() }}{% endif %} <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 {% if current_user.is_anonymous %}
-                <li><a href="{{ url_for('auth.select') }}"><i class="fa fa-sign-in"></i> {% trans %}Login{% endtrans %}</a></li>
+                <li><a href="{{ url_for('auth.select') }}"><i class="fa fa-sign-in"></i> {{ gettext('login').capitalize() }}</a></li>
                 {% else %}
-                <li><a href="{{ url_for('profile.details', user_id=current_user.id) }}"><i class="fa fa-cog"></i> {% trans %}Profile{% endtrans %}</a></li>
-                <li><a href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out"></i> {% trans %}Logout{% endtrans %}</a></li>
+                <li><a href="{{ url_for('profile.details', user_id=current_user.id) }}"><i class="fa fa-cog"></i> {{ gettext('profile').capitalize() }}</a></li>
+                <li><a href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out"></i> {{ gettext('logout').capitalize() }}</a></li>
                 {% endif %}
               </ul>
             </li>
@@ -48,7 +48,7 @@
     <div class="container content" role="main">
       {% for category, flash in get_flashed_messages(with_categories=True) %}
       <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans %}Close{% endtrans %}</span></button>
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">{{ gettext('close').capitalize() }}</span></button>
         {{ flash }}
       </div>
       {% endfor %}
