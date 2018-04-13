@@ -1,11 +1,11 @@
-from flask_wtf import FlaskForm as Form
+from flask_wtf import FlaskForm
 from wtforms import BooleanField
 from flask_babel import lazy_gettext as _
 
 from ..ext import db
 
 
-class BaseForm(Form):
+class BaseForm(FlaskForm):
     pass
 
 

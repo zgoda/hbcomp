@@ -5,6 +5,7 @@ from flask_login import current_user
 from flask_babel import lazy_gettext as _
 
 from .models import User
+from .utils import pagination
 from .ext import db, login_manager, oauth, babel, pages, bootstrap
 
 
@@ -17,6 +18,7 @@ def create_app():
     configure_hooks(app)
     configure_blueprints(app)
     configure_extensions(app)
+    configure_templates(app)
     configure_logging(app)
     configure_error_handlers(app)
     return app
@@ -75,6 +77,15 @@ def configure_extensions(app):
 
     pages.init_app(app)
     pages.get('foo')  # preload all pages
+
+
+def configure_templates(app):
+    app.jinja_env.globals.update({
+        'url_for_other_page': pagination.url_for_other_page,
+        'site_theme': 'flatly',
+        'debug': app.debug,
+        'config': app.config,
+    })
 
 
 def configure_logging(app):

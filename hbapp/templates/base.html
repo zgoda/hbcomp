@@ -5,8 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block pagetitle %}{% endblock %}</title>
-    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    {% block extrameta %}{% endblock %}
+    {% if site_theme == 'default' %}
+    <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap-theme.min.css">
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="/static/vendor/bootswatch/{{ site_theme }}/bootstrap.min.css">
+    {% endif %}
     <link rel="stylesheet" type="text/css" href="/static/vendor/fontawesome/css/font-awesome.min.css">
     {% block extracss %}{% endblock %}
   </head>
@@ -64,7 +69,7 @@
         <hr>
         <p>Copyright: &copy; 2014&ndash;<script>document.write(new Date().getFullYear())</script>, Jarek Zgoda &amp; Z-SOFT. All rights reserved.</p>
       </footer>
-    <script src="/static/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/static/vendor/jquery-3.3.1.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
     {% block extrajs %}
     {% endblock %}
