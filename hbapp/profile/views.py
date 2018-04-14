@@ -1,5 +1,6 @@
 from flask import render_template, redirect, url_for, flash
 from flask_login import login_required
+from flask_babel import _
 
 from ..ext import db
 from ..profile import profile_bp
@@ -7,7 +8,7 @@ from ..profile.forms import ProfileForm
 from ..models import User
 
 
-@profile_bp.route('/<int:user_id>', endpoint='details', methods=['POST', 'GET'])
+@profile_bp.route('/<int:user_id>', methods=['POST', 'GET'])
 @login_required
 def details(user_id):
     user = User.query.get_or_404(user_id)
@@ -16,7 +17,7 @@ def details(user_id):
         form.populate_obj(obj=user)
         db.session.add(user)
         db.session.commit()
-        flash('Your profile data has been saved', category='success')
+        flash(_('your profile data has been saved'), category='success')
         return redirect(url_for('profile.details', user_id=user_id))
     form = ProfileForm(obj=user)
     ctx = {

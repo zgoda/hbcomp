@@ -18,12 +18,12 @@
   {% endif %}
   {% if config.FACEBOOK %}
   <div class="col-md-4">
-    <div class="well well-lg text-center"><a href="#" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i> Facebook</a></div>
+    <div class="well well-lg text-center"><a href="{{ url_for('auth.login', provider='facebook') }}" class="btn btn-social btn-facebook"><i class="fa fa-facebook"></i> Facebook</a></div>
   </div>
   {% endif %}
   {% if config.GITHUB %}
   <div class="col-md-4">
-    <div class="well well-lg text-center"><a href="#" class="btn btn-social btn-github"><i class="fa fa-github"></i> GitHub</a></div>
+    <div class="well well-lg text-center"><a href="{{ url_for('auth.login', provider='github') }}" class="btn btn-social btn-github"><i class="fa fa-github"></i> GitHub</a></div>
   </div>
   {% endif %}
 </div>

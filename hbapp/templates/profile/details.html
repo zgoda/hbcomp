@@ -5,7 +5,7 @@
 {% block pagetitle %}{{ gettext('Account data for user %(name)s', name=current_user.get_full_name()) }}{% endblock %}
 
 {% block content %}
-<h1>{% trans%}Your account data{% endtrans %}</h1>
+<h1>{{ gettext('your account data').capitalize() }}</h1>
 <form class="form form-horizontal" method="post", action="{{ url_for('profile.details', user_id=current_user.id) }}">
   {{ forms.render(form) }}
   <div class="form-group">

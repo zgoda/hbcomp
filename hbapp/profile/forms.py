@@ -6,9 +6,9 @@ from ..models import User
 
 
 class ProfileForm(Form):
-    name = StringField('name')
-    email = StringField('email', validators=[DataRequired(), Email()])
-    location = StringField('location')
+    name = StringField()
+    email = StringField(validators=[DataRequired(), Email()])
+    location = StringField()
 
     def save(self, obj=None, save=True):
         if obj is None:
