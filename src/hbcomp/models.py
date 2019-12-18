@@ -10,16 +10,15 @@ from .utils.sqla import ModelMixin
 class User(db.Model, ModelMixin, UserMixin):
     __tablename__ = 'users'  # "user" is a reserved word in many engines
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
-    name = db.Column(db.String(200))
+    name = db.Column(db.String(200), nullable=False, unique=True)
+    password = db.Column(db.Text(), nullable=False)
     email = db.Column(db.String(200), nullable=False, index=True)
+    email_confirmed = db.Column(db.Boolean, default=False)
+    confirmed_dt = db.Column(db.DateTime)
+    confirmation_token = db.Column(db.String(200))
     location = db.Column(db.String(200))
     location_computed = db.Column(db.Text)
-    access_token = db.Column(db.Text)
-    oauth_token = db.Column(db.Text)
-    oauth_token_secret = db.Column(db.Text)
-    oauth_service = db.Column(db.String(50))
-    remote_userid = db.Column(db.String(200))
-    is_active = db.Column(db.Boolean, default=True)
+    active = db.Column(db.Boolean, default=True)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __table_args__ = (
@@ -27,7 +26,7 @@ class User(db.Model, ModelMixin, UserMixin):
     )
 
     def is_active(self):
-        return self.is_active
+        return self.active
 
     def get_full_name(self):
         return self.name or self.email
@@ -57,6 +56,7 @@ class Competition(db.Model, ModelMixin):
     entries_start_date = db.Column(db.Date, nullable=False)
     entries_finish_date = db.Column(db.Date, nullable=False, index=True)
     announcement = db.Column(db.Text, nullable=False)
+    announcement_html = db.Column(db.Text)
     url = db.Column(db.Text)
     contact_emails = db.Column(db.Text)
     location = db.Column(db.Text)
