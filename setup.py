@@ -34,6 +34,7 @@ REQ_BASE = [
     'Flask-SQLAlchemy',
     'passlib[argon2]',
     'python-dotenv',
+    'Markdown',
 ]
 
 REQ_TEST = [

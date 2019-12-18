@@ -1,5 +1,6 @@
 import datetime
 
+import markdown
 from flask import current_app
 from flask_login import UserMixin
 
@@ -31,7 +32,18 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003s
     code = db.Column(db.String(20))
     name = db.Column(db.String(200), nullable=False)
+    category_url = db.Column(db.Text)
     description = db.Column(db.Text)
+    description_html = db.Column(db.Text)
+
+
+@db.event.listens_for(Category, 'before_insert')
+@db.event.listens_for(Category, 'before_update')
+def category_pre_save(mapper, connection, target):
+    if target.description:
+        target.description_html = markdown.markdown(target.description)
+    else:
+        target.description_html = None
 
 
 categories = db.Table(
@@ -131,7 +143,8 @@ class Note(db.Model):
     final_note = db.Column(db.Integer, nullable=False)  # max = 50
 
 
-# Note events
+@db.event.listens_for(Note, 'before_insert')
+@db.event.listens_for(Note, 'before_update')
 def note_pre_save(mapper, connection, target):
     target.final_note = sum([
         target.aroma_note,
@@ -141,7 +154,3 @@ def note_pre_save(mapper, connection, target):
         target.bitterness_note,
         target.texture_note,
     ])
-
-
-db.event.listen(Note, 'before_insert', note_pre_save)
-db.event.listen(Note, 'before_update', note_pre_save)
