@@ -1,77 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ get_locale().language }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block pagetitle %}{% endblock %}</title>
-    {% block extrameta %}{% endblock %}
-    {% if site_theme == 'default' %}
-    <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap-theme.min.css">
-    {% else %}
-    <link rel="stylesheet" type="text/css" href="/static/vendor/bootswatch/{{ site_theme }}/bootstrap.min.css">
-    {% endif %}
-    <link rel="stylesheet" type="text/css" href="/static/vendor/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/app.css">
+    <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
     {% block extracss %}{% endblock %}
   </head>
   <body role="document">
 
-    <div class="navbar navbar-inverse navbar-static-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">{{ gettext('toggle navigation').capitalize() }}</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{ url_for('home.index') }}">HBComp</a>
+    <div role="main">
+      <div class="flex four-fifth center content grow">
+        {% for category, flash in get_flashed_messages(with_categories=True) %}
+        <div class="card {{ category }}" role="alert">
+          <p>{{ flash }}</p>
+          <a class="close">x</a>
         </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('home.flatpage', path='about') }}">{{ gettext('about').capitalize() }}</a></li>
-            <li><a href="{{ url_for('home.flatpage', path='contact') }}">{{ gettext('contact').capitalize() }}</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {% if current_user.is_anonymous %}{{ gettext('account').capitalize() }}{% else %}{{ current_user.get_full_name() }}{% endif %} <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                {% if current_user.is_anonymous %}
-                <li><a href="{{ url_for('auth.select') }}"><i class="fa fa-sign-in"></i> {{ gettext('login').capitalize() }}</a></li>
-                {% else %}
-                <li><a href="{{ url_for('profile.details', user_id=current_user.id) }}"><i class="fa fa-cog"></i> {{ gettext('profile').capitalize() }}</a></li>
-                <li><a href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out"></i> {{ gettext('logout').capitalize() }}</a></li>
-                {% endif %}
-              </ul>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
+        {% endfor %}
       </div>
-    </div>
-
-    <div class="container content" role="main">
-      {% for category, flash in get_flashed_messages(with_categories=True) %}
-      <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">{{ gettext('close').capitalize() }}</span></button>
-        {{ flash }}
+      <div class="flex four-fifth center content grow">
+        {% block callout %}
+        {% endblock %}
       </div>
-      {% endfor %}
-      {% block callout %}
-      {% endblock %}
-      <div class="row">
-        <div class="col-xs-12">
+      <div class="flex four-fifth center content grow">
+        <div>
         {% block content %}
         {% endblock %}
         </div>
       </div>
-      <footer>
-        <hr>
-        <p>Copyright: &copy; 2014&ndash;<script>document.write(new Date().getFullYear())</script>, Jarek Zgoda &amp; Z-SOFT. All rights reserved.</p>
-      </footer>
+      <div class="flex four-fifth grow center content">
+        <footer>
+          <hr>
+          <p>Copyright: &copy; 2014, Jarek Zgoda &amp; Z-SOFT. All rights reserved.</p>
+        </footer>
+      </div>
     </div>
-    <script src="/static/vendor/jquery-3.3.1.min.js"></script>
-    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
     {% block extrajs %}
     {% endblock %}
   </body>

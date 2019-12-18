@@ -1,11 +1,11 @@
 import os
 
 from flask import Flask, request, send_from_directory
-from flask_babel import lazy_gettext as _
+from flask_babel import lazy_gettext as _, get_locale
 
 from .auth import auth_bp
 from .comp import comp_bp
-from .ext import babel, db, login_manager
+from .ext import babel, csrf, db, login_manager, pages
 from .home import home_bp
 from .models import User
 from .profile import profile_bp
@@ -26,7 +26,7 @@ def create_app():
 
 
 def configure_app(app):
-    app.config.from_object('hbapp.config')
+    app.config.from_object('hbcomp.config')
     if os.environ.get('HB_CONFIG'):
         app.config.from_envvar('HB_CONFIG')
     if app.config['DEBUG']:
@@ -47,7 +47,9 @@ def configure_blueprints(app):
 
 def configure_extensions(app):
     db.init_app(app)
-
+    csrf.init_app(app)
+    pages.init_app(app)
+    pages.get('foo')
     babel.init_app(app)
 
     @babel.localeselector
@@ -68,6 +70,7 @@ def configure_extensions(app):
 def configure_templates(app):
     app.jinja_env.globals.update({
         'url_for_other_page': pagination.url_for_other_page,
+        'get_locale': get_locale,
     })
 
 

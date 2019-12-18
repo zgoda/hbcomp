@@ -1,0 +1,11 @@
+@import url("/static/vendor/picnic.min.css");
+
+html body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.content {
+    margin: 0 auto;
+}

@@ -30,8 +30,10 @@ REQ_BASE = [
     'Flask-Login',
     'Flask-Babel',
     'Flask-WTF',
+    'Flask-FlatPages',
     'Flask-SQLAlchemy',
     'passlib[argon2]',
+    'python-dotenv',
 ]
 
 REQ_TEST = [
@@ -62,7 +64,6 @@ REQ_DEV = REQ_TEST + [
     'towncrier',
     'Sphinx',
     'sphinx-autodoc-typehints',
-    'python-dotenv',
     'flask-shell-ipython',
     'termcolor',
     'watchdog',
@@ -109,7 +110,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'hbco=hbcomp.cli:main',
+            'hbco=hbcomp.cli:cli',
         ],
     },
     python_requires='~=3.7',

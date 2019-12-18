@@ -4,10 +4,9 @@ from flask import current_app
 from flask_login import UserMixin
 
 from .ext import db
-from .utils.sqla import ModelMixin
 
 
-class User(db.Model, ModelMixin, UserMixin):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'  # "user" is a reserved word in many engines
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     name = db.Column(db.String(200), nullable=False, unique=True)
@@ -21,10 +20,6 @@ class User(db.Model, ModelMixin, UserMixin):
     active = db.Column(db.Boolean, default=True)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-    __table_args__ = (
-        db.Index('user_remote_id', 'oauth_service', 'remote_userid'),
-    )
-
     def is_active(self):
         return self.active
 
@@ -32,7 +27,7 @@ class User(db.Model, ModelMixin, UserMixin):
         return self.name or self.email
 
 
-class Category(db.Model, ModelMixin):
+class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003s
     code = db.Column(db.String(20))
     name = db.Column(db.String(200), nullable=False)
@@ -43,11 +38,11 @@ categories = db.Table(
     'competition_categories',
     db.Column('competition_id', db.Integer, db.ForeignKey('competition.id')),
     db.Column('category_id', db.Integer, db.ForeignKey('category.id')),
-    db.Index('competition_categories', 'competition_id', 'category_id', unique=True),
+    db.Index('ix_competition_categories', 'competition_id', 'category_id', unique=True),
 )
 
 
-class Competition(db.Model, ModelMixin):
+class Competition(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     title = db.Column(db.String(200), nullable=False)
     edition = db.Column(db.Integer)
@@ -83,11 +78,11 @@ class Competition(db.Model, ModelMixin):
         if limit is None:
             limit = current_app.config.get('LIST_LIMIT', 5)
         return cls.query.filter(
-            cls.date >= datetime.datetime.utcnow(), cls.is_active._is(True)
+            cls.date >= datetime.datetime.utcnow(), cls.is_active is True
         ).order_by(cls.date).limit(limit)
 
 
-class Entry(db.Model, ModelMixin):
+class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('entries', lazy='dynamic'))
@@ -113,7 +108,7 @@ class Entry(db.Model, ModelMixin):
     )
 
 
-class Note(db.Model, ModelMixin):
+class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
     entry = db.relationship('Entry', backref=db.backref('notes'))

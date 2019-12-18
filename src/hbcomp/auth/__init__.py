@@ -1,6 +1,5 @@
 from flask import Blueprint
 
-
 auth_bp = Blueprint('auth', __name__)
 
-import hbapp.auth.views  # noqa
+from . import views  # noqa: F401

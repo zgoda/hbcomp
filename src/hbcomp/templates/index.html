@@ -3,16 +3,16 @@
 {% block pagetitle %}{{ gettext('your homebrewing competition').capitalize() }}{% endblock %}
 
 {% block callout %}
-<div class="page-header">
+<div>
   <h1>{{ gettext('make the best homebrewing competition').capitalize() }}</h1>
+  <p>{% trans %}Make your homebrewing competition - effortlessly, and in a proper way{% endtrans %}.</p>
+  <p><a href="{{ url_for('home.flatpage', path='about') }}">{{ gettext('learn more').capitalize() }} &raquo;</a></p>
 </div>
-<p class="lead">{% trans %}Make your homebrewing competition - effortlessly, and in a proper way{% endtrans %}.</p>
-<p><a href="{{ url_for('home.flatpage', path='about') }}" class="btn btn-primary btn-lg" role="button">{{ gettext('learn more').capitalize() }} &raquo;</a></p>
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-6">
+<div class="flex two">
+  <div>
     <h2>{{ gettext('recently announced').capitalize() }}</h2>
     <ul>
       {% for comp in recent %}
@@ -22,7 +22,7 @@
       {% endfor %}
     </ul>
   </div>
-  <div class="col-md-6">
+  <div>
     <h2>{{ gettext('upcoming').capitalize() }}</h2>
     <ul>
       {% for comp in upcoming %}
@@ -34,6 +34,6 @@
   </div>
 </div>
 {% if current_user.is_authenticated %}
-<p><a href="{{ url_for('comp.create') }}" class="btn btn-primary btn-lg" role="button">{{ gettext('announce your competition').capitalize() }}</a></p>
+<p><a href="{{ url_for('comp.create') }}">{{ gettext('announce your competition').capitalize() }}</a></p>
 {% endif %}
 {% endblock %}
