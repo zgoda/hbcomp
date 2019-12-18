@@ -9,7 +9,7 @@ from .utils.sqla import ModelMixin
 
 class User(db.Model, ModelMixin, UserMixin):
     __tablename__ = 'users'  # "user" is a reserved word in many engines
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     name = db.Column(db.String(200))
     email = db.Column(db.String(200), nullable=False, index=True)
     location = db.Column(db.String(200))
@@ -34,21 +34,22 @@ class User(db.Model, ModelMixin, UserMixin):
 
 
 class Category(db.Model, ModelMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003s
     code = db.Column(db.String(20))
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
 
 
-categories = db.Table('competition_categories',
+categories = db.Table(
+    'competition_categories',
     db.Column('competition_id', db.Integer, db.ForeignKey('competition.id')),
     db.Column('category_id', db.Integer, db.ForeignKey('category.id')),
-    db.Index('uix_competition_categories', 'competition_id', 'category_id', unique=True),
+    db.Index('competition_categories', 'competition_id', 'category_id', unique=True),
 )
 
 
 class Competition(db.Model, ModelMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     title = db.Column(db.String(200), nullable=False)
     edition = db.Column(db.Integer)
     qualify_date = db.Column(db.Date)
@@ -63,45 +64,57 @@ class Competition(db.Model, ModelMixin):
     purely_virtual = db.Column(db.Boolean, default=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     owner = db.relationship('User', backref=db.backref('competitions', lazy='dynamic'))
-    categories = db.relationship('Category', secondary=categories,
-        backref=db.backref('competitions', lazy='dynamic'))
+    categories = db.relationship(
+        'Category', secondary=categories,
+        backref=db.backref('competitions', lazy='dynamic'),
+    )
     is_active = db.Column(db.Boolean, default=False)
 
     @classmethod
     def recent(cls, limit=None):
         if limit is None:
             limit = current_app.config.get('LIST_LIMIT', 5)
-        return cls.query.filter_by(is_active=True).order_by(db.desc(cls.id)).limit(limit)
+        return cls.query.filter_by(
+            is_active=True
+        ).order_by(db.desc(cls.id)).limit(limit)
 
     @classmethod
     def upcoming(cls, limit=None):
         if limit is None:
             limit = current_app.config.get('LIST_LIMIT', 5)
         return cls.query.filter(
-            cls.date>=datetime.datetime.utcnow(), cls.is_active==True
+            cls.date >= datetime.datetime.utcnow(), cls.is_active._is(True)
         ).order_by(cls.date).limit(limit)
 
 
 class Entry(db.Model, ModelMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('entries', lazy='dynamic'))
-    competition_id = db.Column(db.Integer, db.ForeignKey('competition.id'), nullable=False)
-    competition = db.relationship('Competition', backref=db.backref('entries', lazy='dynamic'))
+    competition_id = db.Column(
+        db.Integer, db.ForeignKey('competition.id'), nullable=False
+    )
+    competition = db.relationship(
+        'Competition', backref=db.backref('entries', lazy='dynamic')
+    )
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-    category = db.relationship('Category', backref=db.backref('entries', lazy='dynamic'))
+    category = db.relationship(
+        'Category', backref=db.backref('entries', lazy='dynamic')
+    )
     name = db.Column(db.String(200), nullable=False)
     received = db.Column(db.Date, default=datetime.date.today)
     remarks = db.Column(db.Text)
     recipe = db.Column(db.Text)
 
     __table_args__ = (
-        db.UniqueConstraint('user_id', 'competition_id', 'category_id', name='uix_competition_user_entries'),
+        db.UniqueConstraint(
+            'user_id', 'competition_id', 'category_id', name='competition_user_entries'
+        ),
     )
 
 
 class Note(db.Model, ModelMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     entry_id = db.Column(db.Integer, db.ForeignKey('entry.id'), nullable=False)
     entry = db.relationship('Entry', backref=db.backref('notes'))
     defects = db.Column(db.Text)
