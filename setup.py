@@ -32,7 +32,6 @@ REQ_BASE = [
     'Flask-WTF',
     'Flask-FlatPages',
     'Flask-SQLAlchemy',
-    'passlib[argon2]',
     'python-dotenv',
     'Markdown',
 ]
@@ -59,14 +58,10 @@ REQ_DEV = REQ_TEST + [
     'pep8-naming',
     'dlint',
     'doc8',
-    'pyroma',
     'rope',
     'isort',
-    'towncrier',
     'Sphinx',
-    'sphinx-autodoc-typehints',
     'flask-shell-ipython',
-    'termcolor',
     'watchdog',
 ]
 
@@ -83,6 +78,7 @@ setup(
     version=find_version('src', 'hbcomp', '_version.py'),
     author='Jarek Zgoda',
     author_email='jarek.zgoda@gmail.com',
+    description='Homebrewing competition management',
     long_description=long_description,
     license='MIT',
     packages=find_packages('src'),
